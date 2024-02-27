@@ -1,7 +1,9 @@
 import React from "react";
 
 function ManagerService() {
-  return <></>;
+  return <>
+  
+  </>;
 }
 
 export default ManagerService;

@@ -2,7 +2,6 @@ import React from "react";
 import "../css/manageUser.css";
 import Header from "../Header/Header";
 
-
 function ManagerUser() {
   const handleSearch = (event) => {
     // Xử lý tìm kiếm ở đây
@@ -10,9 +9,8 @@ function ManagerUser() {
 
   return (
     <>
+      <Header />
 
-    <Header/>
-    
       <main className="table">
         <section className="table_header">
           <h1>Customers Manager</h1>
@@ -40,7 +38,24 @@ function ManagerUser() {
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>{/* Dữ liệu của bảng sẽ được render ở đây */}</tbody>
+            <tbody>
+              {
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img src="../img/Zinzu Chan Lee.jpg" />
+                  </td>
+                  <td>Zinzu Chan Lee</td>
+                  <td>seoul</td>
+                  <td>ZinzuChanLee@gmail.com</td>
+                  <td>User</td>
+                  <td>Offline</td>
+                  <td>
+                    <button className="btn btn-danger">Delete</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
           </table>
         </section>
       </main>

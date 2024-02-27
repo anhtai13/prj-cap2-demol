@@ -13,9 +13,9 @@ function App() {
       <Router>
         <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/user-manager" element={<ManagerUser />} exact />
+        <Route path="/users-manager" element={<ManagerUser />} exact />
         <Route path="/services-manager" element={<ManagerService />} />
-        <Route path="/feedback-manager" element={<ManagerFeedback />} />
+        <Route path="/feedbacks-manager" element={<ManagerFeedback />} />
         <Route path="/orders-manager" element={<ManagerOrder />} />
         <Route path="/orderDetails" element={<ManagerOrderDetail />} />
         <Route path="/ordercalendar" element={<OrderCalendar />} />
