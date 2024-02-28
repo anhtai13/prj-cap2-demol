@@ -3,18 +3,10 @@
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif;
+  
 }
 
-.btn {
-  position: relative;
-  padding: 5px 10px;
-  background: blue;
-  text-decoration: none;
-  color: #fff;
-  border-radius: 10px;
-  margin: 3px;
-  cursor: pointer;
-}
+
 td img {
   width: 36px;
   height: 36px;
@@ -22,15 +14,16 @@ td img {
   border-radius: 50%;
   vertical-align: middle;
 }
-main.table {
-  margin-left: 10%;
-  width: 82vw;
+.table {
+  margin-left: 11%;
+  width: 80vw;
   height: 90vh;
   background-color: #fff5;
   backdrop-filter: blur(7px);
   box-shadow: 0 0.4rem 0.8rem #0005;
   border-radius: 0.8rem;
   overflow: hidden;
+  font-size: 15px;
 }
 .table_header {
   width: 100%;

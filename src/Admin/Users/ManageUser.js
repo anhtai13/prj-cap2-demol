@@ -1,6 +1,6 @@
 import React from "react";
 import "../css/manageUser.css";
-import Header from "../Header/Header";
+import Header from "../Sidebar/Sidebars";
 
 
 function ManagerUser() {

@@ -28,7 +28,7 @@ function Login() {
         //     const errorResponse = error.response.data.errMessage
         //     toast.error(errorResponse)
         // }
-        navigate("/user-manager");
+        navigate("/admin/user-manager");
     }
     
     return (

@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Delicious+Handrawn&family=Montserrat:wght@300;400;500&family=Poppins:wght@400;500;600;700&display=swap");
+
+.containerSibebar {
+  position: fixed;
+  left: 0;
+  top: 0; /* Thêm thuộc tính top để đảm bảo sidebar nằm ở vị trí ban đầu */
+  height: 100%;
+  width: auto;
+  background-color: #f8f9fa;
+  display: flex;
+  padding-top: 50px;
+  font-size: 14px;
+}
+
+
+
+
+
+
