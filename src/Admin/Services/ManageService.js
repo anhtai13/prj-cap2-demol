@@ -11,11 +11,16 @@ function ManageService() {
   const handleSearch = (event) => {
     // Xử lý tìm kiếm ở đây
   };
-  const [show, setShow] = useState(false);
-  const handleCloseModal = () => setShow(false);
+  const [showAdd, setShowAdd] = useState(false);
+  const handleCloseModalAdd = () => setShowAdd(false);
   const handleAddclick = async () => {
-    setShow(true);
+    setShowAdd(true);
   };
+  const [showDelete, setShowDelete] = useState(false);
+  const handleDeleteclick = async () => {
+    setShowDelete(true);
+  };
+  const handleCloseModalDelete = () => setShowDelete(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -40,8 +45,8 @@ function ManageService() {
         <button className="add btn btn-success" onClick={handleAddclick}>
           +Add
         </button>
-        {show && (
-          <Modal show={show} onHide={handleCloseModal} size="lg">
+        {showAdd && (
+          <Modal show={showAdd} onHide={handleCloseModalAdd} size="lg">
             <Modal.Header closeButton>
               <Modal.Title>Add new service</Modal.Title>
             </Modal.Header>
@@ -87,10 +92,10 @@ function ManageService() {
               </Form>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleCloseModal}>
+              <Button variant="secondary" onClick={handleCloseModalAdd}>
                 Close
               </Button>
-              <Button variant="success" onClick={handleCloseModal}>
+              <Button variant="success" onClick={handleCloseModalAdd}>
                 Save
               </Button>
             </Modal.Footer>
@@ -120,7 +125,26 @@ function ManageService() {
                   <td>Clean your living room</td>
                   <td>Hinh nez</td>
                   <td>
-                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-danger" onClick={handleDeleteclick}>Delete</button>{showDelete &&(<Modal show={showDelete} onHide={handleCloseModalDelete} size="lg">
+            <Modal.Header closeButton>
+              <Modal.Title>Delete service</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group controlId="formNameservice">
+                  <Form.Label><h2>Are you sure delete service ?</h2></Form.Label>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModalDelete}>
+                Close
+              </Button>
+              <Button variant="danger" onClick={handleCloseModalDelete}>
+                Delete
+              </Button>
+            </Modal.Footer>
+          </Modal>)}
                     <button className="btn btn-success">Edit</button>
                   </td>
                 </tr>
