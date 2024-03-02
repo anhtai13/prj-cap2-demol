@@ -46,7 +46,7 @@ function Sidebars() {
           Services Management
           </MenuItem>
           <MenuItem
-            component={<Link to="/admin/orderManager" />}
+            component={<Link to="/admin/orders-manager" />}
             icon={<FontAwesomeIcon icon={faTruckRampBox} />}
           >
             Order Management
@@ -84,4 +84,4 @@ function Sidebars() {
   );
 }
 
-export default Sidebars; // Update the exported component to SidebarComponent
+export default Sidebars; 

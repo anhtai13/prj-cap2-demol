@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/manageService.css';
-import Header from '../Header/Header';
+import Sidebars from '../Sidebar/Sidebars';
 
 function ManagerOrder(){
 
@@ -15,7 +15,7 @@ const handleSearchInputChange = (event) => {
 
     return (
     <>
-        <Header/>
+        <Sidebars/>
 
         <main className="table">
         <section className="table_header">

@@ -4,13 +4,6 @@ import Sidebars from "../Sidebar/Sidebars";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-<<<<<<< HEAD
-function ManagerService() {
-  return <>
-  
-  </>;
-=======
-
 function ManageService() {
   const handleSearch = (event) => {
     // Xử lý tìm kiếm ở đây
@@ -67,7 +60,6 @@ function ManageService() {
       </div>
       </>
   );
->>>>>>> d95853ae550dfd5b701ecf109a5af60258f7ca67
 }
 
 export default ManageService;
