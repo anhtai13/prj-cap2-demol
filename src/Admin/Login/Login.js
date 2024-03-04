@@ -11,24 +11,23 @@ function Login() {
     const navigate = useNavigate()
 
     const handleLogin = async () => {
-        // const userLogin = {
-        //     username: userName,
-        //     password: password,
-        //     role: 1
-        // }
-        // try {
-        //     const token = await loginAPI(userLogin)
-        //     if (token) {
-        //         localStorage.setItem("admin", JSON.stringify(token))
-        //         toast.success("Logged in successfully!")
-        //         navigate("/home")
-        //     }
-        // } catch (error) {
-        //     console.log(error)
-        //     const errorResponse = error.response.data.errMessage
-        //     toast.error(errorResponse)
-        // }
-        navigate("/admin/user-manager");
+        const userLogin = {
+            username: userName,
+            password: password,
+            role_id: 1
+        }
+        try {
+            const token = await loginAPI(userLogin)
+            if (token) {
+                localStorage.setItem("admin", JSON.stringify(token.key))
+                toast.success("Logged in successfully!")
+                navigate("/admin/user-manager")
+            }
+        } catch (error) {
+            console.log(error)
+            const errorResponse = error.response.data.errMessage
+            toast.error(errorResponse)
+        }
     }
     
     return (

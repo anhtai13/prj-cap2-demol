@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import "../css/manageService.css";
 import Sidebars from "../Sidebar/Sidebars";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";

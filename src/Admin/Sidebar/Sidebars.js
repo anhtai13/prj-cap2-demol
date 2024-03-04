@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar"; // Use Sidebar instead of ProSidebar
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,19 +13,38 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../css/sidebar.css";
 import { Link } from "react-router-dom";
-import ManageService from "../Services/ManageService";
-
+import { useNavigate } from "react-router-dom"
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 
 function Sidebars() {
+  const localStorageToken = JSON.parse(localStorage.getItem("admin"));
+  const navigate = useNavigate();
+  if (!localStorageToken) {
+    navigate("/admin/login");
+  }
   // Renamed to avoid conflict with import
   const handleLogout = () => {
     // Code xử lý khi người dùng click vào nút logout
+    setShowLogoutModal(true);
+    try {
+      localStorage.removeItem("admin");
+      navigate("/admin/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const handleLogoutclick = async () => {
+    setShowLogoutModal(true);
+  };
+  const handleCloseModalLogout = () => setShowLogoutModal(false);
+  // tạo react-hook collapse của thư viện sidebar 
   const [collapsed, setCollapsed] = React.useState(false);
   return (
     <>
       <div className="containerSibebar">
-      <Sidebar className="side" collapsed={collapsed} >
+      <Sidebar className="side" collapsed={collapsed}>
         <Menu className="menusidebar">
           <MenuItem 
             component={<Link to="/homeAdmin" />}
@@ -65,10 +84,28 @@ function Sidebars() {
           </MenuItem>
           <MenuItem
             icon={<FontAwesomeIcon icon={faSignOutAlt} />}
-            onClick={handleLogout}
+            onClick={handleLogoutclick}
           >
             Log out
-          </MenuItem>
+            
+          </MenuItem>        {showLogoutModal && (
+          <Modal show={showLogoutModal} onHide={handleCloseModalLogout} size="lg" aria-labelledby="contained-modal-title-vcenter"
+          centered>
+            <Modal.Header closeButton>
+              <Modal.Title style={{ color: 'red' }}>Are you sure Logout !</Modal.Title>
+            </Modal.Header>
+    
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModalLogout}>
+                Close
+              </Button>
+              <Button variant="danger" onClick={handleLogout}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+          
         </Menu>
       </Sidebar>
       <main className="Collap" style={{ padding: 5 }}>
