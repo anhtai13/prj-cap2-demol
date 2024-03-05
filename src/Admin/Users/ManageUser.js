@@ -4,9 +4,9 @@ import Header from "../Sidebar/Sidebars";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
-import Pagination from "../../common/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { deleteUser, getListUsers, updateUser} from "../../API/userAPI";
+import Pagination from "../../common/pagination";
 
 function ManagerUser() {
   const [id, setId] = useState();
@@ -223,15 +223,17 @@ function ManagerUser() {
                 : []}
             </tbody>
           </table>
-          {/* Hiển thị các nút phân trang */}
-          <Pagination
+        </section>
+            {/* Hiển thị các nút phân trang
+            <Pagination
             itemsPerPage={itemsPerPage}
             totalItems={searchTerm == "" ? listUser.length : searchItems.length}
             currentPage={currentPage}
             paginate={paginate}
-          />
-        </section>
+          /> */}
       </main>
+      
+
     </>
   );
 }

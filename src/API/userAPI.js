@@ -11,37 +11,6 @@ export const getListUsers = async () => {
   }
 };
 
-export const getListUsersSortedUserName = async (sortType) => {
-  try {
-    const response = await axios.get(
-      `${API_URL}/users?sortUserName=${sortType}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getListUsersSortedRole = async (sortType) => {
-  try {
-    const response = await axios.get(`${API_URL}/users?sortRole=${sortType}`);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getListUsersSortedLastName = async (sortType) => {
-  try {
-    const response = await axios.get(
-      `${API_URL}/users?sortLastName=${sortType}`
-    );
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-
 export const addUser = async (formData) => {
   try {
     const response = await axios.post(`${API_URL}/users`, formData);
@@ -69,7 +38,7 @@ export const deleteUser = async (id) => {
   }
 };
 
-export const getDetaiUser = async (id) => {
+export const getDetailUser = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/users/${id}`);
     return response.data.user;
