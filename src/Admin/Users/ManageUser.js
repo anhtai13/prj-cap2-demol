@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/manageUser.css";
 import Header from "../Sidebar/Sidebars";
 
@@ -7,7 +7,10 @@ function ManagerUser() {
   const handleSearch = (event) => {
     // Xử lý tìm kiếm ở đây
   };
-
+  const [showAdd, setShowAdd] = useState(false);
+  const handleAddclick = async () => {
+    setShowAdd(true);
+  };
   return (
     <>
 
@@ -26,6 +29,9 @@ function ManagerUser() {
             {/* <img src="../img/search.png" alt="Search" /> */}
           </div>
         </section>
+        <button className="add btn btn-success" onClick={handleAddclick}>
+          +Add
+        </button>
         <section className="table_body">
           <table>
             <thead>
