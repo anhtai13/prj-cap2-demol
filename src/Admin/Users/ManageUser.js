@@ -1,10 +1,134 @@
 import React from "react";
 import "../css/manageUser.css";
 import Header from "../Sidebar/Sidebars";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
+import Pagination from "../../common/pagination/Pagination";
+import { useEffect, useState } from "react";
+import { deleteUser, getListUsers, updateUser} from "../../API/userAPI";
 
 function ManagerUser() {
+  const [id, setId] = useState();
+  const [userName, setUserName] = useState();
+  const [email, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [avatar, setAvatar] = useState();
+  const [createdAt, setCreatedAt] = useState();
+  const [updatedAt, setUpdatedAt] = useState();
+  const [createdById, setCreatedById] = useState();
+  const [updatedById, setUpdatedById] = useState();
+  const [role, setRole] = useState(2);
+  const [password, setPassword] = useState("");
+  const [repassword, setRePassword] = useState("");
+  const [isChanged, setIsChanged] = useState(false);
+  const [listUser, setListUsers] = useState([]);
+  const [address_user, setAddress_user] = useState("");
+  const [phone_number, setPhone_number] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentUser, setCurrentUser] = useState([]);
+  const [searchItems, setSearchItems] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(4);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const [isSorted, setIsSorted] = useState(true);
+  let selectedUsers = [];
+  const localStorageUser = JSON.parse(localStorage.getItem("admin"));
+
+  if (!localStorageUser) {
+    navigate("/login");
+  }
+
+  useEffect(() => {
+    getListUsersFormAPI();
+  }, [isChanged]);
+
+  useEffect(() => {
+    // Kiểm tra search input có giá trị hay không
+    if (searchTerm !== "") {
+      // Thực thi filter list danh sách User có Username chứa các kí tự hoặc chuỗi của searchTerm
+      const results = listUser.filter((item) =>
+        item.username.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      // gán list danh sách user sau khi filter cho biến SearchItems
+      setSearchItems(results);
+      // Tính toán số trang phân ra
+      const dataPaging = results.slice(indexOfFirstItem, indexOfLastItem);
+      setCurrentUser(dataPaging);
+    } else {
+      const dataPaging = listUser.slice(indexOfFirstItem, indexOfLastItem);
+      setCurrentUser(dataPaging);
+    }
+  }, [searchTerm, listUser, currentPage]);
+
+  useEffect(() => {
+    if (listUser.length > 0) {
+      const dataPaging = listUser.slice(indexOfFirstItem, indexOfLastItem);
+      setCurrentUser(dataPaging);
+    }
+  }, [currentPage, listUser]);
+
+  const getListUsersFormAPI = async () => {
+    try {
+      const users = await getListUsers();
+      setListUsers(users);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
+
   const handleSearch = (event) => {
-    // Xử lý tìm kiếm ở đây
+    setSearchTerm(event.target.value);
+  };
+
+  const handleSave = async () => {
+    const formDataUpdate = {
+      id: id,
+      username: userName,
+      email: email,
+      password: password,
+      first_name: firstName,
+      last_name: lastName,
+      role: role,
+      avatar: avatar,
+      address_user: address_user,
+      phone_number: phone_number,
+      created_at: createdAt,
+      updated_at: new Date(),
+      created_by_id: localStorageUser.user_id,
+      updated_by_id: localStorageUser.user_id,
+    };
+    try {
+      //Gọi API thêm mới user
+      await updateUser(formDataUpdate);
+      toast.success(
+        `Update account id information ${formDataUpdate.id} Success!`
+      );
+      setIsChanged(!isChanged);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+    setIsChanged(!isChanged);
+  };
+
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      try {
+        await deleteUser(id);
+        toast.success(`Delete account id information ${id} Success!`);
+        setIsChanged(!isChanged);
+      } catch (error) {
+        toast.error(error.response.data.error);
+      }
+    }
+  };
+
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -39,24 +163,73 @@ function ManagerUser() {
               </tr>
             </thead>
             <tbody>
-              {
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img src="../img/Zinzu Chan Lee.jpg" />
-                  </td>
-                  <td>Zinzu Chan Lee</td>
-                  <td>seoul</td>
-                  <td>ZinzuChanLee@gmail.com</td>
-                  <td>User</td>
-                  <td>Offline</td>
-                  <td>
-                    <button className="btn btn-danger">Delete</button>
-                  </td>
-                </tr>
-              }
+              {currentUser
+                ? currentUser.map((item, index) => {
+                    return (
+                      <>
+                        <tr key={item.user_id}>
+                          <td>{item.user_id}</td>
+                          <td>{item.username}</td>
+                          <td>{item.email}</td>
+                          <td>{item.first_name}</td>
+                          <td>{item.last_name}</td>
+                          <td>
+                            <img
+                              src={item.avatar}
+                              alt="Ảnh của bạn"
+                              height={120}
+                              width={200}
+                            />
+                          </td>
+                          <td>
+                            <select
+                              defaultValue={item.role}
+                              disabled
+                              type="text"
+                              className="form-control"
+                            >
+                              <option value={1}>Admin</option>
+                              <option value={2}>User</option>
+                            </select>
+                          </td>
+                          <td>{item.created_at}</td>
+                          <td>
+                            {/* disable */}
+                            {item.role == 1 ? (
+                              ""
+                            ) : (
+                              <>
+                                <button
+                                  className="btn btn-warning me-2"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#staticBackdrop"
+                                  onClick={() => handleSave(item)}
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  className="btn btn-secondary"
+                                  onClick={() => handleDelete(item.user_id)}
+                                >
+                                  Delete
+                                </button>
+                              </>
+                            )}
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })
+                : []}
             </tbody>
           </table>
+          {/* Hiển thị các nút phân trang */}
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={searchTerm == "" ? listUser.length : searchItems.length}
+            currentPage={currentPage}
+            paginate={paginate}
+          />
         </section>
       </main>
     </>
