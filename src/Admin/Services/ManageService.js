@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
+
+
 function ManageService() {
   const handleSearch = (event) => {
     // Xử lý tìm kiếm ở đây
@@ -130,7 +132,7 @@ function ManageService() {
             <Modal.Body>
               <Form>
                 <Form.Group controlId="formNameservice">
-                  <Form.Label><h2>Are you sure delete service ?</h2></Form.Label>
+                  <Form.Label><h4>Are you sure delete service ?</h4></Form.Label>
                 </Form.Group>
               </Form>
             </Modal.Body>

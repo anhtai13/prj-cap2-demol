@@ -133,4 +133,4 @@ function Sidebars() {
   );
 }
 
-export default Sidebars; // Update the exported component to SidebarComponent
+export default Sidebars; 
