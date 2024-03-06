@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { deleteUser, getListUsers, updateUser} from "../../API/userAPI";
+import { deleteUser, getListUsers, updateUser } from "../../API/userAPI";
 import Pagination from "../../common/pagination";
 
 function ManagerUser() {
@@ -148,17 +148,20 @@ function ManagerUser() {
             {/* <img src="../img/search.png" alt="Search" /> */}
           </div>
         </section>
+        <button className="add btn btn-success">+Add</button>
+
         <section className="table_body">
           <table>
             <thead>
               <tr>
                 <th>id</th>
-                <th>Customer</th>
-                <th>Name customer</th>
+                <th>Username</th>
+                <th>First name</th>
+                <th>Last name</th>
                 <th>Location</th>
                 <th>Gmail</th>
                 <th>Role</th>
-                <th>Status</th>
+                {/* <th>Status</th> */}
                 <th>Action</th>
               </tr>
             </thead>
@@ -170,17 +173,18 @@ function ManagerUser() {
                         <tr key={item.user_id}>
                           <td>{item.user_id}</td>
                           <td>{item.username}</td>
-                          <td>{item.email}</td>
                           <td>{item.first_name}</td>
                           <td>{item.last_name}</td>
-                          <td>
+                          <td>{item.address_user}</td>
+                          <td>{item.email}</td>
+                          {/* <td>
                             <img
                               src={item.avatar}
                               alt="Ảnh của bạn"
                               height={120}
                               width={200}
                             />
-                          </td>
+                          </td> */}
                           <td>
                             <select
                               defaultValue={item.role}
@@ -192,7 +196,7 @@ function ManagerUser() {
                               <option value={2}>User</option>
                             </select>
                           </td>
-                          <td>{item.created_at}</td>
+                          {/* <td>{item.created_at}</td> */}
                           <td>
                             {/* disable */}
                             {item.role == 1 ? (
@@ -200,15 +204,14 @@ function ManagerUser() {
                             ) : (
                               <>
                                 <button
-                                  className="btn btn-warning me-2"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#staticBackdrop"
+                                  className="btn btn-success"
                                   onClick={() => handleSave(item)}
                                 >
                                   Edit
                                 </button>
+
                                 <button
-                                  className="btn btn-secondary"
+                                  className="btn btn-danger"
                                   onClick={() => handleDelete(item.user_id)}
                                 >
                                   Delete
@@ -224,7 +227,7 @@ function ManagerUser() {
             </tbody>
           </table>
         </section>
-            {/* Hiển thị các nút phân trang
+        {/* Hiển thị các nút phân trang
             <Pagination
             itemsPerPage={itemsPerPage}
             totalItems={searchTerm == "" ? listUser.length : searchItems.length}
@@ -232,8 +235,6 @@ function ManagerUser() {
             paginate={paginate}
           /> */}
       </main>
-      
-
     </>
   );
 }
