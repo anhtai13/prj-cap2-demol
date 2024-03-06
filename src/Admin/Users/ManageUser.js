@@ -6,6 +6,9 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { deleteUser, getListUsers, updateUser } from "../../API/userAPI";
 import Pagination from "../../common/pagination";
+import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 function ManagerUser() {
   const [id, setId] = useState();
@@ -37,7 +40,11 @@ function ManagerUser() {
   const [isSorted, setIsSorted] = useState(true);
   let selectedUsers = [];
   const localStorageUser = JSON.parse(localStorage.getItem("admin"));
-
+  const [showDelete, setShowDelete] = useState(false);
+  const handleDeleteclick = async () => {
+    setShowDelete(true);
+  };
+  const handleCloseModalDelete = () => setShowDelete(false);
   if (!localStorageUser) {
     navigate("/login");
   }
@@ -139,7 +146,7 @@ function ManagerUser() {
 
       <main className="table">
         <section className="table_header">
-          <h1>Customers Manager</h1>
+          <h1>Users Manager</h1>
           <div className="input-group">
             <input
               type="search"
@@ -208,11 +215,47 @@ function ManagerUser() {
                               <>
                                 <button
                                   className="btn btn-danger"
-                                  onClick={() => handleDelete(item.user_id)}
+                                  onClick={handleDeleteclick}
                                 >
                                   Delete
                                 </button>
-                              
+                                {showDelete && (
+                                  <Modal
+                                    show={showDelete}
+                                    onHide={handleCloseModalDelete}
+                                    size="lg"
+                                  >
+                                    <Modal.Header closeButton>
+                                      <Modal.Title>Delete User</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                      <Form>
+                                        <Form.Group controlId="formNameservice">
+                                          <Form.Label>
+                                            <h4>Are you sure delete user ?</h4>
+                                          </Form.Label>
+                                        </Form.Group>
+                                      </Form>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                      <Button
+                                        variant="secondary"
+                                        onClick={handleCloseModalDelete}
+                                      >
+                                        Close
+                                      </Button>
+                                      <Button
+                                        variant="danger"
+                                        onClick={() =>
+                                          handleDelete(item.user_id)
+                                        }
+                                      >
+                                        Delete
+                                      </Button>
+                                    </Modal.Footer>
+                                  </Modal>
+                                )}
+
                                 <button
                                   className="btn btn-success"
                                   onClick={() => handleSave(item)}
