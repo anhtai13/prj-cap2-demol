@@ -204,17 +204,17 @@ function ManagerUser() {
                             ) : (
                               <>
                                 <button
-                                  className="btn btn-success"
-                                  onClick={() => handleSave(item)}
-                                >
-                                  Edit
-                                </button>
-
-                                <button
                                   className="btn btn-danger"
                                   onClick={() => handleDelete(item.user_id)}
                                 >
                                   Delete
+                                </button>
+                              
+                                <button
+                                  className="btn btn-success"
+                                  onClick={() => handleSave(item)}
+                                >
+                                  Edit
                                 </button>
                               </>
                             )}
