@@ -4,6 +4,7 @@ import { useState } from "react"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAPI } from "../../API/authAPI.js";
+import { Form } from "react-bootstrap";
 
 function Login() {
      const [userName, setUsername] = useState("")
@@ -29,9 +30,16 @@ function Login() {
             toast.error(errorResponse)
         }
     }
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleLogin();
+        }
+    }
     
     return (
         <>
+        <Form onKeyDown={handleKeyDown}>
         <div className="containers">
             <div className="box">
                 <h1 align="center" >Login</h1>
@@ -46,10 +54,11 @@ function Login() {
                     />
                 </div>
                 <div className="text-center">
-                    <button type="button"  onClick={handleLogin}>Login</button>
+                    <button type="button" onClick={handleLogin}>Login</button>
                 </div>
             </div>
         </div>
+        </Form>
 
         
     </>
