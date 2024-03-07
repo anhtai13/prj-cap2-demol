@@ -22,26 +22,19 @@ function Login() {
             if (token) {
                 localStorage.setItem("admin", JSON.stringify(token.key))
                 toast.success("Logged in successfully!")
-<<<<<<< HEAD
-                navigate("/admin/user-manager");
-=======
                 navigate("/admin/user-manager")
->>>>>>> brabches_Phat
             }
         } catch (error) {
             console.log(error)
             const errorResponse = error.response.data.errMessage
             toast.error(errorResponse)
         }
-<<<<<<< HEAD
-=======
     }
 
     const handleKeyDown = (event) => {
         if (event.key === "Enter") {
             handleLogin();
         }
->>>>>>> brabches_Phat
     }
     
     return (
@@ -52,7 +45,8 @@ function Login() {
                 <h1 align="center" >Login</h1>
                 <div className="inputBox">            
                 User name
-                <input type="text" name="username" placeholder="username" required onChange={(e) => setUsername(e.target.value)}/> 
+                    <input type="text" name="username" placeholder="username" required 
+                        onChange={(e) => setUsername(e.target.value)}/> 
                 </div>
                 <div className="inputBox">
                 Password

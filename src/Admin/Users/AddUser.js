@@ -3,7 +3,7 @@ import "../css/AddUser.css"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
-import { addUser } from "../../Service/userAPI";
+import { addUser } from "../../API/userAPI";
 
 function AddUser() {
   // Khởi tạo các biến ứng với các thuộc tính User
@@ -113,15 +113,6 @@ function AddUser() {
               <option value={1}>Admin</option>
               <option value={2}>User</option>
             </select>
-          </div>
-          <div className="inputBox">
-            <input
-              type="text"
-              name="avatar"
-              required
-              onChange={(e) => setAvatar(e.target.value)}
-            />
-            <label>Avatar URL</label>
           </div>
           <div className="inputBox">
             <input

@@ -6,9 +6,8 @@ import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { deleteUser, getListUsers, updateUser } from "../../API/userAPI";
 import Pagination from "../../common/pagination";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import { Form, Modal, Button } from "react-bootstrap";
+import { addUser } from "../../API/userAPI";
 
 function ManagerUser() {
   const [id, setId] = useState();
@@ -29,18 +28,19 @@ function ManagerUser() {
   const [address_user, setAddress_user] = useState("");
   const [phone_number, setPhone_number] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [currentUser, setCurrentUser] = useState([]);
   const [searchItems, setSearchItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(4);
+  const navigate = useNavigate();
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const [isSorted, setIsSorted] = useState(true);
   let selectedUsers = [];
   const localStorageUser = JSON.parse(localStorage.getItem("admin"));
   const [showDelete, setShowDelete] = useState(false);
+  const handleCloseModalAdd = () => setShowAdd(false);
   const handleDeleteclick = async () => {
     setShowDelete(true);
   };
@@ -153,21 +153,51 @@ function ManagerUser() {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   const [showAdd, setShowAdd] = useState(false);
   const handleAddclick = async () => {
     setShowAdd(true);
   };
+
+  const handleAddUser = async () => {
+    const newAdmin = {
+      username: userName,
+      password: password,
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      role: Number(role),
+      avatar: avatar,
+      status: 1,
+      created_at: new Date(),
+      updated_at: "",
+      created_by_id: "",
+      updated_by_id: "",
+    };
+    //validate input
+    if (password !== repassword) {
+      toast.error("The re-entered password does not match");
+    } else {
+      try {
+        //Gọi API thêm mới user
+        await addUser(newAdmin);
+        navigate("/home");
+        toast.success(
+          `Create a username account: ${newAdmin.username} success!`
+        );
+      } catch (error) {
+        toast.error(error.response.data.error);
+      }
+    }
+  };
+
   return (
     <>
       <Header />
 
       <main className="table">
         <section className="table_header">
-<<<<<<< HEAD
-          <h1>Accounts Manager</h1>
-=======
           <h1>Users Manager</h1>
->>>>>>> brabches_Phat
           <div className="input-group">
             <input
               type="search"
@@ -178,18 +208,122 @@ function ManagerUser() {
             {/* <img src="../img/search.png" alt="Search" /> */}
           </div>
         </section>
-<<<<<<< HEAD
-        <button className="add btn btn-success"
-                onClick={() => navigate("/register")}
-        >
-          +Add
-        </button>
 
-=======
         <button className="add btn btn-success" onClick={handleAddclick}>
           +Add
         </button>
->>>>>>> brabches_Phat
+
+        {/*  Modal Add user */}
+        {showAdd && (
+          <Modal show={showAdd} onHide={handleCloseModalAdd} size="lg" centered>
+            <Modal.Header closeButton>
+              <Modal.Title>Add new user</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3" controlId="formUsername">
+                  <Form.Label>
+                    Username<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    required
+                    onChange={(e) => setUserName(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formEmail">
+                  <Form.Label>
+                    Email<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="email"
+                    name="email"
+                    placeholder="Email"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formFirstName">
+                  <Form.Label>First name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="first-name"
+                    placeholder="First name"
+                    required
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formLastName">
+                  <Form.Label>Last name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="last-name"
+                    placeholder="Last name"
+                    required
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formRole">
+                  <Form.Label>
+                    Role<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Select
+                    type="text"
+                    defaultValue={0}
+                    required
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value={0}>Choose role</option>
+                    <option value={1}>Admin</option>
+                    <option value={2}>Employee</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formPassword">
+                  <Form.Label>
+                    Password<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    minLength={6}
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formRePassword">
+                  <Form.Label>
+                    Re-Password<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Re-password"
+                    name="re-password"
+                    required
+                    onChange={(e) => setRePassword(e.target.value)}
+                  />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModalAdd}>
+                Close
+              </Button>
+              <Button variant="success" onClick={handleAddUser}>
+                Create
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
+
         <section className="table_body">
           <table>
             <thead>
@@ -239,7 +373,7 @@ function ManagerUser() {
                           {/* <td>{item.created_at}</td> */}
                           <td>
                             {/* disable */}
-                            {item.role == 1 ? (
+                            {item.role === 1 ? (
                               ""
                             ) : (
                               <>
@@ -253,7 +387,8 @@ function ManagerUser() {
                                   <Modal
                                     show={showDelete}
                                     onHide={handleCloseModalDelete}
-                                    size="lg"
+                                    size="xl-down"
+                                    centered
                                   >
                                     <Modal.Header closeButton>
                                       <Modal.Title>Delete User</Modal.Title>

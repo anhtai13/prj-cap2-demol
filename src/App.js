@@ -6,6 +6,7 @@ import ManagerOrder from "./Admin/Orders/ManageOrder";
 import ManagerOrderDetail from "./Admin/Orders/ManageOrderDetail";
 import ManagerService from "./Admin/Services/ManageService";
 import ManagerFeedback from "./Admin/feedbacks/ManageFeedback";
+import AddUser from "./Admin/Users/AddUser";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} exact />
           <Route path="/admin/user-manager" element={<ManagerUser />} />
+          <Route path="/admin/user-manager/add-user" element={<AddUser />} />
           <Route path="/admin/services-manager" element={<ManagerService />} />
           <Route path="/admin/feedback-manager" element={<ManagerFeedback />} />
           <Route path="/admin/orders-manager" element={<ManagerOrder />} />

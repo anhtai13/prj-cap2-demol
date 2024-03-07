@@ -96,7 +96,7 @@ function ManageService() {
                 Close
               </Button>
               <Button variant="success" onClick={handleCloseModalAdd}>
-                Save
+               Create
               </Button>
             </Modal.Footer>
           </Modal>
