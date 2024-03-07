@@ -9,8 +9,16 @@
 .btn{
   width: 25%;
   margin: 5px;
-  
 }
+
+.required{
+  color: red;
+}
+  .add {
+    width: 100px;
+    margin-left: 90%;
+    margin-top: 1%;
+  }
 
 td img {
   width: 36px;

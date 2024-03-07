@@ -21,14 +21,13 @@ function Login() {
             if (token) {
                 localStorage.setItem("admin", JSON.stringify(token))
                 toast.success("Logged in successfully!")
-                navigate("/home")
+                navigate("/admin/user-manager");
             }
         } catch (error) {
             console.log(error)
             const errorResponse = error.response.data.errMessage
             toast.error(errorResponse)
         }
-        navigate("/admin/user-manager");
     }
     
     return (

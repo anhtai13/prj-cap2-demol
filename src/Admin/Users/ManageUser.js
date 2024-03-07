@@ -85,6 +85,23 @@ function ManagerUser() {
     setSearchTerm(event.target.value);
   };
 
+  const handleEdit = (item) => {
+    setIsEdit(!isEdit);
+    setUserName(item.username);
+    setEmail(item.email);
+    setFirstName(item.first_name);
+    setLastName(item.last_name);
+    setAvatar(item.avatar);
+    setAddress_user(item.address_user);
+    setPhone_number(item.phone_number);
+    setCreatedAt(item.created_at);
+    setRole(item.role);
+    setId(item.user_id);
+    setCreatedById(item.created_by_id);
+    setUpdatedAt(item.updated_at);
+    setUpdatedById(item.updated_by_id);
+  };
+
   const handleSave = async () => {
     const formDataUpdate = {
       id: id,
@@ -137,18 +154,22 @@ function ManagerUser() {
 
       <main className="table">
         <section className="table_header">
-          <h1>Customers Manager</h1>
+          <h1>Accounts Manager</h1>
           <div className="input-group">
             <input
               type="search"
-              id="search"
-              onKeyUp={handleSearch}
+              value={searchTerm}
+              onChange={handleSearch}
               placeholder="Search..."
             />
             {/* <img src="../img/search.png" alt="Search" /> */}
           </div>
         </section>
-        <button className="add btn btn-success">+Add</button>
+        <button className="add btn btn-success"
+                onClick={() => navigate("/register")}
+        >
+          +Add
+        </button>
 
         <section className="table_body">
           <table>
