@@ -4,6 +4,7 @@ import { useState } from "react"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAPI } from "../../API/authAPI.js";
+import { Form } from "react-bootstrap";
 
 function Login() {
      const [userName, setUsername] = useState("")
@@ -14,24 +15,38 @@ function Login() {
         const userLogin = {
             username: userName,
             password: password,
-            role: 1
+            role_id: 1
         }
         try {
             const token = await loginAPI(userLogin)
             if (token) {
-                localStorage.setItem("admin", JSON.stringify(token))
+                localStorage.setItem("admin", JSON.stringify(token.key))
                 toast.success("Logged in successfully!")
+<<<<<<< HEAD
                 navigate("/admin/user-manager");
+=======
+                navigate("/admin/user-manager")
+>>>>>>> brabches_Phat
             }
         } catch (error) {
             console.log(error)
             const errorResponse = error.response.data.errMessage
             toast.error(errorResponse)
         }
+<<<<<<< HEAD
+=======
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleLogin();
+        }
+>>>>>>> brabches_Phat
     }
     
     return (
         <>
+        <Form onKeyDown={handleKeyDown}>
         <div className="containers">
             <div className="box">
                 <h1 align="center" >Login</h1>
@@ -46,10 +61,11 @@ function Login() {
                     />
                 </div>
                 <div className="text-center">
-                    <button type="button"  onClick={handleLogin}>Login</button>
+                    <button type="button" onClick={handleLogin}>Login</button>
                 </div>
             </div>
         </div>
+        </Form>
 
         
     </>
