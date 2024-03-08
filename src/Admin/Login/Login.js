@@ -15,7 +15,7 @@ function Login() {
         const userLogin = {
             username: userName,
             password: password,
-            role_id: 1
+            role: 1
         }
         try {
             const token = await loginAPI(userLogin)

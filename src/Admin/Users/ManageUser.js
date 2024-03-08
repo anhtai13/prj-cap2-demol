@@ -181,7 +181,7 @@ function ManagerUser() {
       try {
         //Gọi API thêm mới user
         await addUser(newAdmin);
-        navigate("/home");
+        navigate("/admin/user-manager");
         toast.success(
           `Create a username account: ${newAdmin.username} success!`
         );
@@ -282,6 +282,7 @@ function ManagerUser() {
                     <option value={0}>Choose role</option>
                     <option value={1}>Admin</option>
                     <option value={2}>Employee</option>
+                    <option value={3}>Customer</option>
                   </Form.Select>
                 </Form.Group>
 
