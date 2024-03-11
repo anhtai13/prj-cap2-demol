@@ -22,7 +22,7 @@
     background-size: cover;
 }
 
-.box {
+.boxlogin {
     position     : absolute;
     top          : 50%;
     left         : 50%;
@@ -35,7 +35,7 @@
     border-radius: 10px;
 }
 
-.box h1 {
+.boxlogin h1 {
     text-align: center;
     margin-bottom: 24px;
     font-family: 'Poppins', SomiBold;
@@ -43,11 +43,11 @@
     
 }
 
-.box .inputBox {
+.boxlogin .inputBox {
     position: relative;
 }
 
-.box .inputBox input {
+.boxlogin .inputBox input {
     width: 100%;
     padding: 8px;
     margin-bottom: 20px;
@@ -55,14 +55,14 @@
     border: 1px solid #ccc;
 }
 
-.box .inputBox label {
+.boxlogin .inputBox label {
     position      : absolute;
     top           : 0;
     left          : 0;
     letter-spacing: 1px;
     padding       : 10px 0;
     font-size     : 16px;
-    color         : #fff;
+    color         : #FFFFFF;
     pointer-events: none;
     transition    : 0.5s;
 }
@@ -85,7 +85,7 @@
     top: 1px;
   }
 
-.box input[type="submit"] {
+.boxlogin input[type="submit"] {
     width: 100%;
     padding: 8px;
     border: none;
@@ -94,7 +94,7 @@
     color: white;
     cursor: pointer;
 }
-.box input[type="text"]:focus, input[type="password"]:focus {
+.boxlogin input[type="text"]:focus, input[type="password"]:focus {
     outline: none;
     border: 2px solid lightblue; /* Tăng độ rộng của đường viền lên 2px */
 }

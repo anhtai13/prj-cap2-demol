@@ -41,7 +41,7 @@ function Login() {
         <>
         <Form onKeyDown={handleKeyDown}>
         <div className="containers">
-            <div className="box">
+            <div className="boxlogin">
                 <h1 align="center" >Login</h1>
                 <div className="inputBox">            
                 User name

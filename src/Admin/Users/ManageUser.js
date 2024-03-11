@@ -8,6 +8,7 @@ import { deleteUser, getListUsers, updateUser } from "../../API/userAPI";
 import Pagination from "../../common/pagination";
 import { Form, Modal, Button } from "react-bootstrap";
 import { addUser } from "../../API/userAPI";
+import Col from "react-bootstrap/Col";
 
 function ManagerUser() {
   const [id, setId] = useState();
@@ -20,7 +21,7 @@ function ManagerUser() {
   const [updatedAt, setUpdatedAt] = useState();
   const [createdById, setCreatedById] = useState();
   const [updatedById, setUpdatedById] = useState();
-  const [role, setRole] = useState(2);
+  const [role, setRole] = useState(3);
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
   const [isChanged, setIsChanged] = useState(false);
@@ -139,15 +140,15 @@ function ManagerUser() {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await deleteUser(id);
-        toast.success(`Delete account id information ${id} Success!`);
-        setIsChanged(!isChanged);
-      } catch (error) {
-        toast.error(error.response.data.error);
-      }
+    try {
+      await deleteUser(id);
+      toast.success(`Delete account id information ${id} Success!`);
+      setIsChanged(!isChanged);
+      setShowDelete(false);
+    } catch (error) {
+      toast.error(error.response.data.error);
     }
+    
   };
 
   const paginate = (pageNumber) => {
@@ -171,8 +172,8 @@ function ManagerUser() {
       status: 1,
       created_at: new Date(),
       updated_at: "",
-      created_by_id: "",
-      updated_by_id: "",
+      created_by_id: 1,
+      updated_by_id: 1,
     };
     //validate input
     if (password !== repassword) {
@@ -185,6 +186,7 @@ function ManagerUser() {
         toast.success(
           `Create a username account: ${newAdmin.username} success!`
         );
+        setShowAdd(false);
       } catch (error) {
         toast.error(error.response.data.error);
       }
@@ -219,35 +221,43 @@ function ManagerUser() {
             <Modal.Header closeButton>
               <Modal.Title>Add new user</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-              <Form>
-                <Form.Group className="mb-3" controlId="formUsername">
-                  <Form.Label>
-                    Username<span className="required">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    required
-                    onChange={(e) => setUserName(e.target.value)}
-                  />
-                </Form.Group>
+          <Modal.Body>
+            <Form>
+              <Form.Group as={Col} className="mb-3" controlId="formUsername">
+                <Form.Label>
+                  Username<span className="required">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="Username"
+                  placeholder="Username"
+                  required
+                  isInvalid={!userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please choose a username.
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formEmail">
-                  <Form.Label>
-                    Email<span className="required">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
+              <Form.Group className="mb-3" controlId="formEmail">
+                <Form.Label>
+                  Email<span className="required">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  required
+                  isInvalid={!email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a valid email address.
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formFirstName">
+              <Form.Group className="mb-3" controlId="formFirstName">
                   <Form.Label>First name</Form.Label>
                   <Form.Control
                     type="text"
@@ -269,52 +279,63 @@ function ManagerUser() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formRole">
-                  <Form.Label>
-                    Role<span className="required">*</span>
-                  </Form.Label>
-                  <Form.Select
-                    type="text"
-                    defaultValue={0}
-                    required
-                    onChange={(e) => setRole(e.target.value)}
-                  >
-                    <option value={0}>Choose role</option>
-                    <option value={1}>Admin</option>
-                    <option value={2}>Employee</option>
-                    <option value={3}>Customer</option>
-                  </Form.Select>
-                </Form.Group>
+              <Form.Group className="mb-3" controlId="formRole">
+                <Form.Label>
+                  Role<span className="required">*</span>
+                </Form.Label>
+                <Form.Select
+                  type="text"
+                  defaultValue={0}
+                  required
+                  onChange={(e) => setRole(e.target.value)}
+                >
+                  <option value={0}>Choose role</option>
+                  <option value={1}>Admin</option>
+                  <option value={2}>Employee</option>
+                  <option value={3}>Customer</option>
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Please choose a role.
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>
-                    Password<span className="required">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    minLength={6}
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </Form.Group>
+              <Form.Group className="mb-3" controlId="formPassword">
+                <Form.Label>
+                  Password<span className="required">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  minLength={6}
+                  required
+                  isInvalid={!password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please enter a password with at least 6 characters.
+                </Form.Control.Feedback>
+              </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formRePassword">
-                  <Form.Label>
-                    Re-Password<span className="required">*</span>
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Re-password"
-                    name="re-password"
-                    required
-                    onChange={(e) => setRePassword(e.target.value)}
-                  />
-                </Form.Group>
-              </Form>
-            </Modal.Body>
-            <Modal.Footer>
+              <Form.Group className="mb-3" controlId="formRePassword">
+                <Form.Label>
+                  Re-Password<span className="required">*</span>
+                </Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Re-password"
+                  name="re-password"
+                  required
+                  isInvalid={!repassword || repassword !== password}
+                  onChange={(e) => setRePassword(e.target.value)}
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please re-enter the password correctly.
+                </Form.Control.Feedback>
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+<Modal.Footer>
               <Button variant="secondary" onClick={handleCloseModalAdd}>
                 Close
               </Button>

@@ -22,7 +22,7 @@ export const addUser = async (formData) => {
 
 export const updateUser = async (formData) => {
   try {
-    const response = await axios.put(`${API_URL}/users`, formData);
+    const response = await axios.put(`${API_URL}/users/update`, formData);
     return response.data;
   } catch (error) {
     throw error;
@@ -31,7 +31,7 @@ export const updateUser = async (formData) => {
 
 export const deleteUser = async (id) => {
   try {
-    const response = await axios.delete(`${API_URL}/users/${id}`);
+    const response = await axios.delete(`${API_URL}/users/delete/${id}`);
     return response.data;
   } catch (error) {
     throw error;
