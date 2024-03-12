@@ -53,10 +53,7 @@ function ManagerUser() {
     navigate("/login");
   }
 
-  useEffect(() => {
-    getListUsersFormAPI();
-  }, [isChanged]);
-
+ 
   useEffect(() => {
     // Kiểm tra search input có giá trị hay không
     if (searchTerm !== "") {
@@ -82,14 +79,6 @@ function ManagerUser() {
     }
   }, [currentPage, listUser]);
 
-  const getListUsersFormAPI = async () => {
-    try {
-      const users = await getListUsers();
-      setListUsers(users);
-    } catch (error) {
-      toast.error("Something went wrong!");
-    }
-  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -115,6 +104,7 @@ function ManagerUser() {
     setUpdatedById(item.updated_by_id);
   };
 
+  // handSave fix bug
   const handleSave = async () => {
     const formDataUpdate = {
       id: id,
@@ -198,6 +188,20 @@ function ManagerUser() {
       } catch (error) {
         toast.error(error.response.data.error);
       }
+    }
+  };
+
+  useEffect(() => {
+    getListUsersFormAPI();
+  }, [isChanged]);
+
+
+  const getListUsersFormAPI = async () => {
+    try {
+      const users = await getListUsers();
+      setListUsers(users);
+    } catch (error) {
+      toast.error("Something went wrong!");
     }
   };
 
