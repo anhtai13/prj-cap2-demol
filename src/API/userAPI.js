@@ -20,9 +20,9 @@ export const addUser = async (formData) => {
   }
 };
 
-export const updateUser = async (formData) => {
+export const updateUser = async (id, formData) => {
   try {
-    const response = await axios.put(`${API_URL}/users/update`, formData);
+    const response = await axios.put(`${API_URL}/users/update/${id}`, formData);
     return response.data;
   } catch (error) {
     throw error;
