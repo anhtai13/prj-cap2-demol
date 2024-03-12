@@ -22,7 +22,7 @@ function Sidebars() {
   const localStorageToken = JSON.parse(localStorage.getItem("admin"));
   const navigate = useNavigate();
   if (!localStorageToken) {
-    navigate("/admin/login");
+    navigate("/");
   }
   // Renamed to avoid conflict with import
   const handleLogout = () => {
@@ -30,7 +30,7 @@ function Sidebars() {
     setShowLogoutModal(true);
     try {
       localStorage.removeItem("admin");
-      navigate("/admin/login");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
