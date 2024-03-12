@@ -1,6 +1,6 @@
 import "../css/manageUser.css";
 import Header from "../Sidebar/Sidebars";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
@@ -36,7 +36,7 @@ function ManagerUser() {
   const [currentUser, setCurrentUser] = useState([]);
   const [searchItems, setSearchItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(4);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
   const navigate = useNavigate();
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -48,12 +48,13 @@ function ManagerUser() {
   const handleDeleteclick = async () => {
     setShowDelete(true);
   };
+  const [showEdit, setShowEdit] = useState(false);
+  const handleCloseModalEdit = () => setShowEdit(false);
   const handleCloseModalDelete = () => setShowDelete(false);
   if (!localStorageUser) {
     navigate("/login");
   }
 
- 
   useEffect(() => {
     // Kiểm tra search input có giá trị hay không
     if (searchTerm !== "") {
@@ -70,23 +71,22 @@ function ManagerUser() {
       const dataPaging = listUser.slice(indexOfFirstItem, indexOfLastItem);
       setCurrentUser(dataPaging);
     }
-  }, [searchTerm, listUser, currentPage]);
+  }, [searchTerm, listUser, currentPage, isChanged]);
 
   useEffect(() => {
     if (listUser.length > 0) {
       const dataPaging = listUser.slice(indexOfFirstItem, indexOfLastItem);
       setCurrentUser(dataPaging);
     }
-  }, [currentPage, listUser]);
-
+  }, [currentPage, listUser, isChanged]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-  const [showEdit, setShowEdit] = useState(false);
-  const handleCloseModalEdit = () => setShowEdit(false);
 
+  //hiển thị dữ liệu từ db
   const handleEdit = (item) => {
+    console.log(item);
     setShowEdit(true);
     setIsEdit(!isEdit);
     setUserName(item.username);
@@ -123,11 +123,12 @@ function ManagerUser() {
     };
     try {
       // Gọi API cập nhật người dùng
-      await updateUser(formDataUpdate);
+      await updateUser(id, formDataUpdate);
       toast.success(
         `Update account id information ${formDataUpdate.id} Success!`
       );
       setIsChanged(!isChanged);
+      setShowEdit(false);
     } catch (error) {
       if (error.response && error.response.data) {
         toast.error(error.response.data.error);
@@ -138,6 +139,7 @@ function ManagerUser() {
     setIsChanged(!isChanged);
   };
 
+  // Xóa người dùng
   const handleDelete = async (id) => {
     try {
       await deleteUser(id);
@@ -149,6 +151,7 @@ function ManagerUser() {
     }
   };
 
+  // Phân trang
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -158,6 +161,7 @@ function ManagerUser() {
     setShowAdd(true);
   };
 
+  // Thêm tài khoản người dùng
   const handleAddUser = async () => {
     const newAdmin = {
       username: userName,
@@ -194,7 +198,6 @@ function ManagerUser() {
   useEffect(() => {
     getListUsersFormAPI();
   }, [isChanged]);
-
 
   const getListUsersFormAPI = async () => {
     try {
@@ -458,7 +461,7 @@ function ManagerUser() {
 
                                 <button
                                   className="btn btn-success"
-                                  onClick={handleEdit}
+                                  onClick={() => handleEdit(item)}
                                 >
                                   Edit
                                 </button>
@@ -542,12 +545,13 @@ function ManagerUser() {
                                           <Form.Label>Last name</Form.Label>
                                           <Form.Control
                                             type="text"
+                                            value={lastName}
                                             name="last_name"
                                             placeholder="Last name"
                                             required
                                             defaultValue={item.last_name}
                                             onChange={(e) =>
-                                              setPhone_number(e.target.value)
+                                              setLastName(e.target.value)
                                             }
                                           />
                                         </Form.Group>
@@ -604,8 +608,7 @@ function ManagerUser() {
                                       </Button>
                                       <Button
                                         variant="success"
-                                        onClick={
-                                          handleSave}
+                                        onClick={handleSave}
                                       >
                                         Save
                                       </Button>
