@@ -21,7 +21,7 @@ function Login() {
             const token = await loginAPI(userLogin)
             if (token) {
                 localStorage.setItem("admin", JSON.stringify(token.key))
-                toast.success("Logged in successfully!")
+                // toast.success("Logged in successfully!")
                 navigate("/admin/user-manager")
             }
         } catch (error) {

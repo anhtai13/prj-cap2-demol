@@ -48,10 +48,10 @@ function ManagerUser() {
   const handleDeleteclick = async () => {
     setShowDelete(true);
   };
-  
   const handleCloseModalDelete = () => setShowDelete(false);
+
   if (!localStorageUser) {
-    navigate("/login");
+    navigate("/");
   }
 
   useEffect(() => {
