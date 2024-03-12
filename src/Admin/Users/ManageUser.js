@@ -48,6 +48,7 @@ function ManagerUser() {
   const handleDeleteclick = async () => {
     setShowDelete(true);
   };
+  
   const handleCloseModalDelete = () => setShowDelete(false);
   if (!localStorageUser) {
     navigate("/login");
@@ -82,14 +83,6 @@ function ManagerUser() {
     }
   }, [currentPage, listUser]);
 
-  const getListUsersFormAPI = async () => {
-    try {
-      const users = await getListUsers();
-      setListUsers(users);
-    } catch (error) {
-      toast.error("Something went wrong!");
-    }
-  };
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -200,6 +193,16 @@ function ManagerUser() {
       }
     }
   };
+
+  const getListUsersFormAPI = async () => {
+    try {
+      const users = await getListUsers();
+      setListUsers(users);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
+
 
   return (
     <>
