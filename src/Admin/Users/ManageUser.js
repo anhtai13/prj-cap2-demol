@@ -55,6 +55,10 @@ function ManagerUser() {
     navigate("/login");
   }
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   useEffect(() => {
     // Kiểm tra search input có giá trị hay không
     if (searchTerm !== "") {
@@ -79,10 +83,6 @@ function ManagerUser() {
       setCurrentUser(dataPaging);
     }
   }, [currentPage, listUser, isChanged]);
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   //hiển thị dữ liệu từ db
   const handleEdit = (item) => {
@@ -171,6 +171,7 @@ function ManagerUser() {
       last_name: lastName,
       role: Number(role),
       avatar: avatar,
+      phone_number: phone_number,
       status: 1,
       created_at: new Date(),
       updated_at: "",
@@ -193,6 +194,7 @@ function ManagerUser() {
         toast.error(error.response.data.error);
       }
     }
+    setIsChanged(!isChanged);
   };
 
   useEffect(() => {
@@ -210,8 +212,8 @@ function ManagerUser() {
 
   return (
     <>
-      <Header />
-
+    <Header />
+    <div className="container">
       <main className="table">
         <section className="table_header">
           <h1>Users Manager</h1>
@@ -272,6 +274,23 @@ function ManagerUser() {
                   </Form.Control.Feedback>
                 </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formPhone">
+                  <Form.Label>
+                    Phone<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="phone"
+                    name="phone"
+                    placeholder="phone"
+                    required
+                    isInvalid={!phone_number}
+                    onChange={(e) => setPhone_number(e.target.value)}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter a valid phone number.
+                  </Form.Control.Feedback>
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formFirstName">
                   <Form.Label>First name</Form.Label>
                   <Form.Control
@@ -294,6 +313,23 @@ function ManagerUser() {
                   />
                 </Form.Group>
 
+                <Form.Group className="mb-3" controlId="formAddress">
+                  <Form.Label>
+                    Address<span className="required">*</span>
+                  </Form.Label>
+                  <Form.Control
+                    type="address"
+                    name="address"
+                    placeholder="address"
+                    required
+                    isInvalid={!address_user}
+                    onChange={(e) => setAddress_user(e.target.value)}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please enter a valid address.
+                  </Form.Control.Feedback>
+                </Form.Group>
+
                 <Form.Group className="mb-3" controlId="formRole">
                   <Form.Label>
                     Role<span className="required">*</span>
@@ -306,8 +342,9 @@ function ManagerUser() {
                   >
                     <option value={0}>Choose role</option>
                     <option value={1}>Admin</option>
-                    <option value={2}>Employee</option>
-                    <option value={3}>Customer</option>
+                    <option value={2}>Manager</option>
+                    <option value={3}>Employee</option>
+                    <option value={4}>Customer</option>
                   </Form.Select>
                   <Form.Control.Feedback type="invalid">
                     Please choose a role.
@@ -365,12 +402,12 @@ function ManagerUser() {
           <table>
             <thead>
               <tr>
-                <th>id</th>
+                {/* <th>id</th> */}
                 <th>Username</th>
-                <th>First name</th>
-                <th>Last name</th>
+                <th>Full name</th>
                 <th>Location</th>
                 <th>Gmail</th>
+                <th>Phone</th>
                 <th>Role</th>
                 {/* <th>Status</th> */}
                 <th>Action</th>
@@ -382,12 +419,12 @@ function ManagerUser() {
                     return (
                       <>
                         <tr key={item.user_id}>
-                          <td>{item.user_id}</td>
+                          {/* <td>{item.user_id}</td> */}
                           <td>{item.username}</td>
-                          <td>{item.first_name}</td>
-                          <td>{item.last_name}</td>
+                          <td>{(item.last_name == null && item.first_name == null) ? '' : ((item.last_name == null ? '' : item.last_name) + " " + (item.first_name == null ? '' : item.first_name))}</td>
                           <td>{item.address_user}</td>
                           <td>{item.email}</td>
+                          <td>{item.phone_number}</td>
                           {/* <td>
                             <img
                               src={item.avatar}
@@ -404,8 +441,9 @@ function ManagerUser() {
                               className="form-control"
                             >
                               <option value={1}>Admin</option>
-                              <option value={2}>Employee</option>
-                              <option value={3}>Customer</option>
+                              <option value={2}>Manager</option>
+                              <option value={3}>Employee</option>
+                              <option value={4}>Customer</option>
                             </select>
                           </td>
                           {/* <td>{item.created_at}</td> */}
@@ -577,8 +615,9 @@ function ManagerUser() {
                                               Choose role
                                             </option>
                                             <option value={1}>Admin</option>
-                                            <option value={2}>Employee</option>
-                                            <option value={3}>Customer</option>
+                                            <option value={2}>Manager</option>
+                                            <option value={3}>Employee</option>
+                                            <option value={4}>Customer</option>
                                           </Form.Select>
                                         </Form.Group>
                                         <Form.Group
@@ -626,14 +665,17 @@ function ManagerUser() {
             </tbody>
           </table>
         </section>
-        {/* Hiển thị các nút phân trang
-            <Pagination
-            itemsPerPage={itemsPerPage}
-            totalItems={searchTerm == "" ? listUser.length : searchItems.length}
-            currentPage={currentPage}
-            paginate={paginate}
-          /> */}
+        {/* Hiển thị các nút phân trang */}
+      <div className="Pagination">
+        <Pagination
+          itemsPerPage={itemsPerPage}
+          totalItems={searchTerm == "" ? listUser.length : searchItems.length}
+          currentPage={currentPage}
+          paginate={paginate}
+        />
+      </div>
       </main>
+      </div>
     </>
   );
 }

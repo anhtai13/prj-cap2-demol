@@ -102,15 +102,15 @@ function Sidebars() {
                 </Modal.Header>
                 <Modal.Body>
                   <Form style={{textAlign:"center"}}>
-                    <Form.Label>Are you sure ?</Form.Label>
+                    <Form.Label>Do you want to Sign Out ?</Form.Label>
                   </Form>
                 </Modal.Body>
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleCloseModalLogout}>
-                    Close
+                    No
                   </Button>
                   <Button variant="danger" onClick={handleLogout}>
-                    OK
+                    Yes
                   </Button>
                 </Modal.Footer>
               </Modal>
