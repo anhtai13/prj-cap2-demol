@@ -112,7 +112,6 @@ function ManagerUser() {
       username: userName,
       email: email,
       password: password,
-      repassword: password,
       first_name: firstName,
       last_name: lastName,
       role: role,
