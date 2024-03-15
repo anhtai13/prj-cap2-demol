@@ -12,6 +12,7 @@ import {
 } from "../../API/userAPI";
 import Pagination from "../../common/pagination";
 import { Form, Modal, Button, Col } from "react-bootstrap";
+import Sidebars from "../Sidebar/Sidebars";
 
 function ManagerUser() {
   const [id, setId] = useState();
@@ -110,6 +111,8 @@ function ManagerUser() {
       id: id,
       username: userName,
       email: email,
+      password: password,
+      repassword: password,
       first_name: firstName,
       last_name: lastName,
       role: role,
@@ -212,8 +215,7 @@ function ManagerUser() {
 
   return (
     <>
-    <Header />
-    <div className="container">
+      <Sidebars />
       <main className="table">
         <section className="table_header">
           <h1>Users Manager</h1>
@@ -421,7 +423,15 @@ function ManagerUser() {
                         <tr key={item.user_id}>
                           {/* <td>{item.user_id}</td> */}
                           <td>{item.username}</td>
-                          <td>{(item.last_name == null && item.first_name == null) ? '' : ((item.last_name == null ? '' : item.last_name) + " " + (item.first_name == null ? '' : item.first_name))}</td>
+                          <td>
+                            {item.last_name == null && item.first_name == null
+                              ? ""
+                              : (item.last_name == null ? "" : item.last_name) +
+                                " " +
+                                (item.first_name == null
+                                  ? ""
+                                  : item.first_name)}
+                          </td>
                           <td>{item.address_user}</td>
                           <td>{item.email}</td>
                           <td>{item.phone_number}</td>
@@ -550,7 +560,6 @@ function ManagerUser() {
                                             name="email"
                                             placeholder="Email"
                                             required
-                                            disabled
                                             defaultValue={item.email}
                                             onChange={(e) =>
                                               setEmail(e.target.value)
@@ -636,6 +645,42 @@ function ManagerUser() {
                                             }
                                           />
                                         </Form.Group>
+                                        <Form.Group
+                                          className="mb-3"
+                                          controlId="formPassword"
+                                        >
+                                          <Form.Label>
+                                            Password
+                                          </Form.Label>
+                                          <Form.Control
+                                            type="password"
+                                            placeholder="Password"
+                                            name="password"
+                                            minLength={6}
+                                            required
+                                            onChange={(e) =>
+                                              setPassword(e.target.value)
+                                            }
+                                          />
+                                        </Form.Group>
+
+                                        <Form.Group
+                                          className="mb-3"
+                                          controlId="formRePassword"
+                                        >
+                                          <Form.Label>
+                                            Re-Password
+                                          </Form.Label>
+                                          <Form.Control
+                                            type="password"
+                                            placeholder="Re-password"
+                                            name="re-password"
+                                            required                                         
+                                            onChange={(e) =>
+                                              setRePassword(e.target.value)
+                                            }
+                                          />
+                                        </Form.Group>
                                       </Form>
                                     </Modal.Body>
                                     <Modal.Footer>
@@ -666,16 +711,15 @@ function ManagerUser() {
           </table>
         </section>
         {/* Hiển thị các nút phân trang */}
-      <div className="Pagination">
-        <Pagination
-          itemsPerPage={itemsPerPage}
-          totalItems={searchTerm == "" ? listUser.length : searchItems.length}
-          currentPage={currentPage}
-          paginate={paginate}
-        />
-      </div>
+        <div className="Pagination">
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={searchTerm == "" ? listUser.length : searchItems.length}
+            currentPage={currentPage}
+            paginate={paginate}
+          />
+        </div>
       </main>
-      </div>
     </>
   );
 }
