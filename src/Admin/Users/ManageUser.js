@@ -360,7 +360,6 @@ function ManagerUser() {
                     type="password"
                     placeholder="Password"
                     name="password"
-                    minLength={6}
                     required
                     isInvalid={!password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -655,7 +654,6 @@ function ManagerUser() {
                                             type="password"
                                             placeholder="Password"
                                             name="password"
-                                            minLength={6}
                                             required
                                             onChange={(e) =>
                                               setPassword(e.target.value)
