@@ -112,6 +112,7 @@ function ManagerUser() {
       username: userName,
       email: email,
       password: password,
+      repassword: password,
       first_name: firstName,
       last_name: lastName,
       role: role,
@@ -123,6 +124,9 @@ function ManagerUser() {
       created_by_id: localStorageUser.user_id,
       updated_by_id: localStorageUser.user_id,
     };
+    if (password !== repassword) {
+      toast.error("The re-entered password does not match");
+    } else {
     try {
       // Gọi API cập nhật người dùng
       await updateUser(id, formDataUpdate);
@@ -138,6 +142,7 @@ function ManagerUser() {
         toast.error("Có lỗi xảy ra khi cập nhật người dùng");
       }
     }
+  }
     setIsChanged(!isChanged);
   };
 
@@ -476,7 +481,7 @@ function ManagerUser() {
                                     centered
                                   >
                                     <Modal.Header closeButton>
-                                      <Modal.Title>Delete User</Modal.Title>
+                                      <Modal.Title style={{color:"red"}}>Delete User</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body>
                                       <Form>
@@ -492,7 +497,7 @@ function ManagerUser() {
                                         variant="secondary"
                                         onClick={handleCloseModalDelete}
                                       >
-                                        Close
+                                        No
                                       </Button>
                                       <Button
                                         variant="danger"
@@ -500,7 +505,7 @@ function ManagerUser() {
                                           handleDelete(item.user_id)
                                         }
                                       >
-                                        Delete
+                                        Yes
                                       </Button>
                                     </Modal.Footer>
                                   </Modal>
@@ -601,7 +606,23 @@ function ManagerUser() {
                                             }
                                           />
                                         </Form.Group>
-
+                                        <Form.Group
+                                          className="mb-3"
+                                          controlId="formAddress"
+                                        >
+                                          <Form.Label>Address</Form.Label>
+                                          <Form.Control
+                                            type="text"
+                                            value={address_user}
+                                            name="address"
+                                            placeholder="address"
+                                            required
+                                            defaultValue={item.address_user}
+                                            onChange={(e) =>
+                                              setAddress_user(e.target.value)
+                                            }
+                                          />
+                                        </Form.Group>
                                         <Form.Group
                                           className="mb-3"
                                           controlId="formRole"
