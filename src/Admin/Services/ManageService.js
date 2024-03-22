@@ -1,21 +1,26 @@
-import React, { useState } from "react";
 import "../css/manageService.css";
 import Sidebars from "../Sidebar/Sidebars";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useEffect, useState } from "react";
-import { Toast } from "react-bootstrap";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import Pagination from "../../common/pagination";
-import { addService, deleteServices, updateService, getListServices } from "../../API/servicesAPI";
+import {
+  addService,
+  deleteService,
+  updateService,
+  getListServices,
+} from "../../API/servicesAPI";
 
 function ManageService() {
   const [serviceName, setServiceName] = useState();
   const [price, setPrice] = useState();
   const [imgUrl, setImgUrl] = useState();
   const [description, setDescription] = useState();
+  const [category, setCategory] = useState();
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
   const [id, setId] = useState();
@@ -32,7 +37,7 @@ function ManageService() {
   let selectedService = [];
   let errorResponse = "";
   const localStorageUser = JSON.parse(localStorage.getItem("admin"));
-  
+
   const [showAdd, setShowAdd] = useState(false);
   const handleCloseModalAdd = () => setShowAdd(false);
   const handleAddclick = async () => {
@@ -50,124 +55,131 @@ function ManageService() {
   };
 
   useEffect(() => {
-    getListServicesAPI()
-}, [isChanged])
+    getListServicesAPI();
+  }, [isChanged]);
 
-useEffect(() => {
+  useEffect(() => {
     const dataPaging = listServices.slice(indexOfFirstItem, indexOfLastItem);
     setCurrentItems(dataPaging);
-}, [currentPage, listServices])
+  }, [currentPage, listServices]);
 
-useEffect(() => {
-    if (searchTerm !== '') {
-        const results = listServices.filter((item) =>
-            item.name_service.toLowerCase().includes(searchTerm.toLowerCase()));
-        setSearchItems(results)
-        const dataPaging = results.slice(indexOfFirstItem, indexOfLastItem);
-        setCurrentItems(dataPaging)
+  useEffect(() => {
+    if (searchTerm !== "") {
+      const results = listServices.filter((item) =>
+        item.name_service.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setSearchItems(results);
+      const dataPaging = results.slice(indexOfFirstItem, indexOfLastItem);
+      setCurrentItems(dataPaging);
     } else {
-        const dataPaging = listServices.slice(indexOfFirstItem, indexOfLastItem);
-        setCurrentItems(dataPaging);
+      const dataPaging = listServices.slice(indexOfFirstItem, indexOfLastItem);
+      setCurrentItems(dataPaging);
     }
-}, [searchTerm, listServices, currentPage]);
+  }, [searchTerm, listServices, currentPage]);
 
-const getListServicesAPI = async () => {
+  const getListServicesAPI = async () => {
     try {
-        const services = await getListServices()
-        setListServices(services)
+      const services = await getListServices();
+      setListServices(services);
     } catch (error) {
-        toast.error("Something went wrong!")
+      toast.error("Something went wrong!");
     }
-}
+  };
 
-const handleAdd = async () => {
-  const formData = {
-      name: productName,
+  const handleAdd = async () => {
+    const formData = {
+      name: serviceName,
       price: +price,
       description: description,
+      category: category,
       image: imgUrl,
       created_at: new Date(),
       created_by_id: 1,
       updated_at: new Date(),
-      updated_by_id: ""
-  }
-  try {
-      await addService(formData)
-      toast.success(`Add service ${productName} Success!`)
-      document.getElementById("form").reset()
-      setProductName("")
-      setPrice("")
-      setDescription("")
-      setImgUrl("")
-      setIsChanged(!isChanged)
-  } catch (error) {
-      errorResponse = error.response.data.errMessage
-      toast.error(error.response.data.errMessage)
-  }
-}
+      updated_by_id: "",
+    };
+    try {
+      await addService(formData);
+      toast.success(`Add service ${serviceName} Success!`);
+      document.getElementById("form").reset();
+      setServiceName("");
+      setCategory("");
+      setPrice("");
+      setCategory("");
+      setDescription("");
+      setCategory("");
+      setImgUrl("");
+      setIsChanged(!isChanged);
+    } catch (error) {
+      // errorResponse = error.response.data.errMessage
+      toast.error("");
+    }
+  };
 
-const handleEdit = (id) => {
-  setIsEdit(!isEdit)
-  listProducts.map(item => {
+  const handleEdit = (id) => {
+    setIsEdit(!isEdit);
+    listServices.map((item) => {
       if (item.service_id === id) {
-          console.log(item)
-          setServiceName(item.name_service)
-          setPrice(item.unit_price)
-          setDescription(item.description)
-          setImgUrl(item.image)
-          setId(item.service_id)
+        console.log(item);
+        setServiceName(item.name_service);
+        setCategory(item.category_id);
+        setPrice(item.unit_price);
+        setDescription(item.description);
+        setImgUrl(item.image);
+        setId(item.service_id);
       }
-  })
-}
+    });
+  };
 
-const handleSaveEdit = async () => {
-  const formDataUpdate = {
-      "id": id,
-      "name": serviceName,
-      "price": +price,
-      "description": description,
-      "image": imgUrl,
-      "created_at": createAt,
-      "created_by_id": localStorageUser.id,
-      "updated_at": new Date(),
-      "updated_by_id": localStorageUser.id
-  }
-  try {
-      await updateService(formDataUpdate)
-      toast.success(`Update service ${serviceName} success!`)
-      document.getElementById("form").reset()
-      setServiceName("")
-      setPrice("")
-      setDescription("")
-      setImgUrl("")
-      setIsEdit(!isEdit)
-      setIsChanged(!isChanged)
-  } catch (error) {
-      errorResponse = error.response.data.message
-      toast.error(error.response.data.message)
-  }
-}
+  const handleSaveEdit = async () => {
+    const formDataUpdate = {
+      id: id,
+      name: serviceName,
+      price: +price,
+      description: description,
+      image: imgUrl,
+      created_at: createAt,
+      created_by_id: localStorageUser.id,
+      updated_at: new Date(),
+      updated_by_id: localStorageUser.id,
+    };
+    try {
+      await updateService(formDataUpdate);
+      toast.success(`Update service ${serviceName} success!`);
+      document.getElementById("form").reset();
+      setServiceName("");
+      setPrice("");
+      setDescription("");
+      setImgUrl("");
+      setIsEdit(!isEdit);
+      setIsChanged(!isChanged);
+    } catch (error) {
+      // errorResponse = error.response.data.message
+      toast.error("");
+    }
+  };
 
-const handleDeleteProduct = async (id) => {
-  if (window.confirm("Are you sure to delete this service?")) {
+  const handleDeleteService = async (id) => {
+    if (window.confirm("Are you sure to delete this service?")) {
       try {
-          await deleteServices(id)
-          toast.success(`Service deletion successful!`)
-          setIsChanged(!isChanged)
+        await deleteService(id);
+        toast.success(`Service deletion successful!`);
+        setIsChanged(!isChanged);
+        setShowDelete(false);
       } catch (error) {
-          errorResponse = error.response.data.error
-          toast.error(error.response.data.error)
+        // errorResponse = error.response.data.error
+        toast.error("");
       }
-  }
-}
+    }
+  };
 
-const paginate = (pageNumber) => {
-  setCurrentPage(pageNumber);
-};
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-const handleSearch = (event) => {
-  setSearchTerm(event.target.value);
-};
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
     <>
@@ -179,10 +191,9 @@ const handleSearch = (event) => {
             <input
               type="search"
               id="search"
-              onKeyUp={handleSearch}
+              onChange={handleSearch}
               placeholder="Search..."
             />
-            {/* <img src="../img/search.png" alt="Search" /> */}
           </div>
         </section>
         <button className="add btn btn-success" onClick={handleAddclick}>
@@ -199,21 +210,36 @@ const handleSearch = (event) => {
                   <Form.Label>
                     Name service<span className="required">*</span>
                   </Form.Label>
-                  <Form.Control type="text" placeholder="name service" />
+                  <Form.Control
+                    type="text"
+                    placeholder="name service"
+                    required
+                    onChange={(e) => setServiceName(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group controlId="formPrice">
                   <Form.Label>
                     Price<span className="required">*</span>
                   </Form.Label>
-                  <Form.Control placeholder="50.000" />
+                  <Form.Control
+                    placeholder="Price"
+                    type="number"
+                    required
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group controlId="formCategory">
                   <Form.Label>
                     Category<span className="required">*</span>
                   </Form.Label>
-                  <Form.Control type="text" placeholder="category" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Category"
+                    required
+                    onChange={(e) => setCategory(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="Decription">
@@ -223,6 +249,7 @@ const handleSearch = (event) => {
                   <Form.Control
                     as="textarea"
                     placeholder="decription"
+                    onChange={(e) => setDescription(e.target.value)}
                     rows={3}
                   />
                 </Form.Group>
@@ -234,6 +261,7 @@ const handleSearch = (event) => {
                   <div className="custom-file">
                     <input
                       type="file"
+                      required
                       className="custom-file-input"
                       id="customFile"
                       onChange={handleFileChange}
@@ -262,67 +290,78 @@ const handleSearch = (event) => {
                 <th>Category</th>
                 <th>Decription</th>
                 <th>Image service</th>
+                <th>created at</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {
-                /* Dữ liệu của bảng sẽ được render ở đây */
-                <tr>
-                  <td>1</td>
-                  <td>Clean living room</td>
-                  <td>50.000 đ</td>
-                  <td>Vila</td>
-                  <td>Clean your living room</td>
-                  <td>Hinh nez</td>
-                  <td>
-                    <button
-                      className="btn btn-danger"
-                      onClick={handleDeleteclick}
-                    >
-                      Delete
-                    </button>
-                    {showDelete && (
-                      <Modal
-                        show={showDelete}
-                        onHide={handleCloseModalDelete}
-                        size="lg"
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title>Delete service</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <Form>
-                            <Form.Group controlId="formNameservice">
-                              <Form.Label>
-                                <h4>Are you sure delete service ?</h4>
-                              </Form.Label>
-                            </Form.Group>
-                          </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            variant="secondary"
-                            onClick={handleCloseModalDelete}
-                          >
-                            Close
-                          </Button>
-                          <Button
-                            variant="danger"
-                            onClick={handleCloseModalDelete}
-                          >
-                            Delete
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-                    )}
-                    <button className="btn btn-success">Edit</button>
-                  </td>
-                </tr>
-              }
+              {currentItems
+                ? currentItems.map((item, index) => {
+                    return (
+                      <>
+                        <tr key={index}>
+                          <td>{item.service_id}</td>
+                          <td>{item.name_service}</td>
+                          <td>{item.unit_price.toLocaleString()} đ</td>
+                          <td>{item.category_id}</td>
+                          <td>{item.description}</td>
+                          <td>
+                            <img
+                              src={item.image}
+                              alt="The photo is damaged"
+                              height={120}
+                              width={200}
+                            />
+                          </td>
+                          <td>{item.created_at}</td>
+                          <td>
+                            <button className="btn btn-danger" onClick={handleDeleteclick}>Delete</button>{showDelete &&(
+                            <Modal show={showDelete} onHide={handleCloseModalDelete} size="lg">
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Delete service</Modal.Title>
+                                      </Modal.Header>
+                                        <Modal.Body>
+                                          <Form>
+                                            <Form.Group controlId="formNameservice">
+                                              <Form.Label><h4>Are you sure delete service ?</h4></Form.Label>
+                                            </Form.Group>
+                                           </Form>
+                                        </Modal.Body>
+                                <Modal.Footer>
+                                  <Button variant="secondary" onClick={handleCloseModalDelete}>
+                                    Close
+                                  </Button>
+                                  <Button variant="danger" onClick={handleCloseModalDelete}>
+                                    Delete
+                                  </Button>
+                                </Modal.Footer>
+                              </Modal>)}
+                              <button
+                                  className="btn btn-success"
+                                  onClick={() => handleEdit(item)}
+                                >
+                                  Edit
+                                </button>
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })
+                : ""}
             </tbody>
           </table>
         </section>
+        {/* Hiển thị các nút phân trang */}
+        <div className="Pagination">
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={
+              searchTerm == "" ? listServices.length : searchItems.length
+            }
+            currentPage={currentPage}
+            paginate={paginate}
+          />
+        </div>
       </div>
     </>
   );
