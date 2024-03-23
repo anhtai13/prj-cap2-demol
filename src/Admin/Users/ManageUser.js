@@ -25,7 +25,7 @@ function ManagerUser() {
   const [updatedAt, setUpdatedAt] = useState();
   const [createdById, setCreatedById] = useState();
   const [updatedById, setUpdatedById] = useState();
-  const [role, setRole] = useState(3);
+  const [role, setRole] = useState(4);
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
   const [isChanged, setIsChanged] = useState(false);

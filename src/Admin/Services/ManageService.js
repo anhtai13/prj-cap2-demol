@@ -20,7 +20,7 @@ function ManageService() {
   const [price, setPrice] = useState();
   const [imgUrl, setImgUrl] = useState();
   const [description, setDescription] = useState();
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState(3);
   const navigate = useNavigate();
   const [isChanged, setIsChanged] = useState(false);
   const [id, setId] = useState();
@@ -91,7 +91,7 @@ function ManageService() {
       name: serviceName,
       price: +price,
       description: description,
-      category: category,
+      category: Number(category),
       image: imgUrl,
       created_at: new Date(),
       created_by_id: 1,
@@ -101,6 +101,7 @@ function ManageService() {
     try {
       await addService(formData);
       toast.success(`Add service ${serviceName} Success!`);
+      setShowAdd(false);
       document.getElementById("form").reset();
       setServiceName("");
       setCategory("");
@@ -109,11 +110,12 @@ function ManageService() {
       setDescription("");
       setCategory("");
       setImgUrl("");
-      setIsChanged(!isChanged);
+      
     } catch (error) {
-      // errorResponse = error.response.data.errMessage
-      toast.error("");
+      errorResponse = error.response.data.errMessage
+      toast.error(errorResponse);
     }
+    setIsChanged(!isChanged);
   };
 
   const handleEdit = (id) => {
@@ -154,23 +156,21 @@ function ManageService() {
       setIsEdit(!isEdit);
       setIsChanged(!isChanged);
     } catch (error) {
-      // errorResponse = error.response.data.message
-      toast.error("");
+      errorResponse = error.response.data.message
+      toast.error(errorResponse);
     }
   };
 
   const handleDeleteService = async (id) => {
-    if (window.confirm("Are you sure to delete this service?")) {
       try {
         await deleteService(id);
-        toast.success(`Service deletion successful!`);
+        toast.success(`Service delection successful!`);
         setIsChanged(!isChanged);
         setShowDelete(false);
       } catch (error) {
-        // errorResponse = error.response.data.error
-        toast.error("");
+        errorResponse = error.response.data.error
+        toast.error(errorResponse);
       }
-    }
   };
 
   const paginate = (pageNumber) => {
@@ -206,7 +206,7 @@ function ManageService() {
             </Modal.Header>
             <Modal.Body>
               <Form>
-                <Form.Group controlId="formNameservice">
+                <Form.Group className="mb-3" controlId="formNameservice">
                   <Form.Label>
                     Name service<span className="required">*</span>
                   </Form.Label>
@@ -218,7 +218,7 @@ function ManageService() {
                   />
                 </Form.Group>
 
-                <Form.Group controlId="formPrice">
+                <Form.Group className="mb-3" controlId="formPrice">
                   <Form.Label>
                     Price<span className="required">*</span>
                   </Form.Label>
@@ -230,16 +230,24 @@ function ManageService() {
                   />
                 </Form.Group>
 
-                <Form.Group controlId="formCategory">
+                <Form.Group className="mb-3" controlId="formCategory">
                   <Form.Label>
                     Category<span className="required">*</span>
                   </Form.Label>
-                  <Form.Control
+                  <Form.Select
                     type="text"
-                    placeholder="Category"
+                    defaultValue={0}
                     required
                     onChange={(e) => setCategory(e.target.value)}
-                  />
+                  >
+                    <option value={0}>Choose category</option>
+                    <option value={1}>House</option>
+                    <option value={2}>Hotel</option>
+                    <option value={3}>Motel</option>
+                  </Form.Select>
+                  <Form.Control.Feedback type="invalid">
+                    Please choose a category.
+                  </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="Decription">
@@ -303,7 +311,18 @@ function ManageService() {
                           <td>{item.service_id}</td>
                           <td>{item.name_service}</td>
                           <td>{item.unit_price.toLocaleString()} đ</td>
-                          <td>{item.category_id}</td>
+                          <td>
+                            <select
+                              defaultValue={item.category_id}
+                              disabled
+                              type="text"
+                              className="form-control"
+                            >
+                              <option value={1}>House</option>
+                              <option value={2}>Hotel</option>
+                              <option value={3}>Motel</option>
+                            </select>
+                          </td>
                           <td>{item.description}</td>
                           <td>
                             <img
@@ -331,7 +350,7 @@ function ManageService() {
                                   <Button variant="secondary" onClick={handleCloseModalDelete}>
                                     Close
                                   </Button>
-                                  <Button variant="danger" onClick={handleCloseModalDelete}>
+                                  <Button variant="danger" onClick={()=>handleDeleteService(item.service_id)}>
                                     Delete
                                   </Button>
                                 </Modal.Footer>
