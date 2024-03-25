@@ -86,7 +86,7 @@ function ManageService() {
     }
   };
 
-  const handleAdd = async () => {
+  const handleAddService = async () => {
     const formData = {
       name: serviceName,
       price: +price,
@@ -262,7 +262,7 @@ function ManageService() {
                   />
                 </Form.Group>
 
-                <Form.Group>
+                {/* <Form.Group>
                   <Form.Label>
                     Image<span style={{ color: "red" }}>*</span>
                   </Form.Label>
@@ -275,14 +275,14 @@ function ManageService() {
                       onChange={handleFileChange}
                     />
                   </div>
-                </Form.Group>
+                </Form.Group> */}
               </Form>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={handleCloseModalAdd}>
                 Close
               </Button>
-              <Button variant="success" onClick={handleCloseModalAdd}>
+              <Button variant="success" onClick={handleAddService}>
                 Create
               </Button>
             </Modal.Footer>
@@ -292,7 +292,7 @@ function ManageService() {
           <table>
             <thead>
               <tr>
-                <th>id</th>
+                {/* <th>id</th> */}
                 <th>Name Service</th>
                 <th>Price</th>
                 <th>Category</th>
@@ -308,7 +308,7 @@ function ManageService() {
                     return (
                       <>
                         <tr key={index}>
-                          <td>{item.service_id}</td>
+                          {/* <td>{item.service_id}</td> */}
                           <td>{item.name_service}</td>
                           <td>{item.unit_price.toLocaleString()} đ</td>
                           <td>
