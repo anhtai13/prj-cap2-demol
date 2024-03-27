@@ -86,6 +86,16 @@ function ManageService() {
     }
   };
 
+//gọi hàm getlistservices
+  useEffect(() => {
+    const fetchImage = async () => {
+      const data = await getListServices();
+      setImgUrl(data);
+    };
+
+    fetchImage();
+  }, []);
+  
   const handleAddService = async () => {
     const formData = new FormData();
 
@@ -326,14 +336,13 @@ function ManageService() {
                           </td>
                           <td>{item.description}</td>
                           <td>
-                            {item.image && (
-                              <img
-                                src={item.image} // Ensure item.image contains the correct URL
-                                alt="Service Image"
-                                height={120}
-                                width={200}
-                              />
-                            )}
+                          {
+                            imgUrl && imgUrl
+                              .filter(imgUrls => imgUrls.service_id === item.service_id)
+                              .map(imgUrls => (
+                                <img className="imageService" src={`http://localhost:3131/images/${imgUrls.image}`} alt="service image" />
+                              ))
+                          }                        
                           </td>
                           <td>{item.created_at}</td>
                           <td>
