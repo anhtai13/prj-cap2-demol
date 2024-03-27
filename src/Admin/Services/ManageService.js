@@ -48,7 +48,7 @@ function ManageService() {
     setShowDelete(true);
   };
   const handleCloseModalDelete = () => setShowDelete(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState("");
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
@@ -87,17 +87,19 @@ function ManageService() {
   };
 
   const handleAddService = async () => {
-    const formData = {
-      name: serviceName,
-      price: +price,
-      description: description,
-      category: Number(category),
-      image: imgUrl,
-      created_at: new Date(),
-      created_by_id: 1,
-      updated_at: new Date(),
-      updated_by_id: "",
-    };
+    const formData = new FormData();
+
+    // Thêm dữ liệu vào formData
+    formData.append("image", selectedFile); // Thay selectedFile bằng biến chứa file ảnh
+    formData.append("name_service", serviceName);
+    formData.append("unit_price", price);
+    formData.append("description", description);
+    formData.append("category_id", category);
+    formData.append(
+      "created_at",
+      new Date().toISOString().slice(0, 19).replace("T", " ")
+    );
+    formData.append("created_by_id", 1);
     try {
       await addService(formData);
       toast.success(`Add service ${serviceName} Success!`);
@@ -109,13 +111,12 @@ function ManageService() {
       setCategory("");
       setDescription("");
       setCategory("");
-      setImgUrl("");
-      
+      setSelectedFile("");
+      setIsChanged(!isChanged);
     } catch (error) {
-      errorResponse = error.response.data.errMessage
+      errorResponse = error.response.data.errMessage;
       toast.error(errorResponse);
     }
-    setIsChanged(!isChanged);
   };
 
   const handleEdit = (id) => {
@@ -156,21 +157,21 @@ function ManageService() {
       setIsEdit(!isEdit);
       setIsChanged(!isChanged);
     } catch (error) {
-      errorResponse = error.response.data.message
+      errorResponse = error.response.data.message;
       toast.error(errorResponse);
     }
   };
 
   const handleDeleteService = async (id) => {
-      try {
-        await deleteService(id);
-        toast.success(`Service delection successful!`);
-        setIsChanged(!isChanged);
-        setShowDelete(false);
-      } catch (error) {
-        errorResponse = error.response.data.error
-        toast.error(errorResponse);
-      }
+    try {
+      await deleteService(id);
+      toast.success(`Service delection successful!`);
+      setIsChanged(!isChanged);
+      setShowDelete(false);
+    } catch (error) {
+      errorResponse = error.response.data.error;
+      toast.error(errorResponse);
+    }
   };
 
   const paginate = (pageNumber) => {
@@ -262,7 +263,7 @@ function ManageService() {
                   />
                 </Form.Group>
 
-                {/* <Form.Group>
+                <Form.Group>
                   <Form.Label>
                     Image<span style={{ color: "red" }}>*</span>
                   </Form.Label>
@@ -275,7 +276,7 @@ function ManageService() {
                       onChange={handleFileChange}
                     />
                   </div>
-                </Form.Group> */}
+                </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -310,7 +311,7 @@ function ManageService() {
                         <tr key={index}>
                           {/* <td>{item.service_id}</td> */}
                           <td>{item.name_service}</td>
-                          <td>{item.unit_price.toLocaleString()} đ</td>
+                          <td>{item.unit_price} </td>
                           <td>
                             <select
                               defaultValue={item.category_id}
@@ -325,42 +326,65 @@ function ManageService() {
                           </td>
                           <td>{item.description}</td>
                           <td>
-                            <img
-                              src={item.image}
-                              alt="The photo is damaged"
-                              height={120}
-                              width={200}
-                            />
+                            {item.image && (
+                              <img
+                                src={item.image} // Ensure item.image contains the correct URL
+                                alt="Service Image"
+                                height={120}
+                                width={200}
+                              />
+                            )}
                           </td>
                           <td>{item.created_at}</td>
                           <td>
-                            <button className="btn btn-danger" onClick={handleDeleteclick}>Delete</button>{showDelete &&(
-                            <Modal show={showDelete} onHide={handleCloseModalDelete} size="lg">
+                            <button
+                              className="btn btn-danger"
+                              onClick={handleDeleteclick}
+                            >
+                              Delete
+                            </button>
+                            {showDelete && (
+                              <Modal
+                                show={showDelete}
+                                onHide={handleCloseModalDelete}
+                                size="lg"
+                              >
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Delete service</Modal.Title>
-                                      </Modal.Header>
-                                        <Modal.Body>
-                                          <Form>
-                                            <Form.Group controlId="formNameservice">
-                                              <Form.Label><h4>Are you sure delete service ?</h4></Form.Label>
-                                            </Form.Group>
-                                           </Form>
-                                        </Modal.Body>
+                                  <Modal.Title>Delete service</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                  <Form>
+                                    <Form.Group controlId="formNameservice">
+                                      <Form.Label>
+                                        <h4>Are you sure delete service ?</h4>
+                                      </Form.Label>
+                                    </Form.Group>
+                                  </Form>
+                                </Modal.Body>
                                 <Modal.Footer>
-                                  <Button variant="secondary" onClick={handleCloseModalDelete}>
+                                  <Button
+                                    variant="secondary"
+                                    onClick={handleCloseModalDelete}
+                                  >
                                     Close
                                   </Button>
-                                  <Button variant="danger" onClick={()=>handleDeleteService(item.service_id)}>
+                                  <Button
+                                    variant="danger"
+                                    onClick={() =>
+                                      handleDeleteService(item.service_id)
+                                    }
+                                  >
                                     Delete
                                   </Button>
                                 </Modal.Footer>
-                              </Modal>)}
-                              <button
-                                  className="btn btn-success"
-                                  onClick={() => handleEdit(item)}
-                                >
-                                  Edit
-                                </button>
+                              </Modal>
+                            )}
+                            <button
+                              className="btn btn-success"
+                              onClick={() => handleEdit(item)}
+                            >
+                              Edit
+                            </button>
                           </td>
                         </tr>
                       </>
