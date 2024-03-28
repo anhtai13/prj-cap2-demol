@@ -8,6 +8,8 @@ import ManagerService from "./Admin/Services/ManageService";
 import ManagerFeedback from "./Admin/feedbacks/ManageFeedback";
 import AddUser from "./Admin/Users/AddUser";
 import HomePage from "./Admin/HomePage/Home";
+import ForgotPassword from "./Admin/component/Forgotpassword";
+import ResetPassword from "./Admin/component/Resetpassword";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
           <Route path="/admin/orders-manager" element={<ManagerOrder />} />
           <Route path="/admin/orderDetails" element={<ManagerOrderDetail />} />
           <Route path="/admin/ordercalendar" element={<OrderCalendar />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/resetpassword" element={<ResetPassword />} />
         </Routes>
       </Router>
     </div>

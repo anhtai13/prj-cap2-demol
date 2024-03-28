@@ -28,11 +28,13 @@
     left         : 50%;
     transform    : translate(-50%, -50%);
     width        : 400px;
+    height: 435px;
     padding      : 50px;
     background   : #FFFFFF;
     box-sizing   : border-box;
     box-shadow   : 0 15px 25px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+    
 }
 
 .boxlogin h1 {
@@ -101,6 +103,14 @@
 
 
 a {
-    color      : #fff;
-    margin-left: 2%;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+.link{
+   padding-bottom: 10px;
+    text-align: left;
+    text-decoration: underline;
 }

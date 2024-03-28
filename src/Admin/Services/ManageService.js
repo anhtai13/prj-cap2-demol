@@ -18,7 +18,7 @@ import {
 function ManageService() {
   const [serviceName, setServiceName] = useState();
   const [price, setPrice] = useState();
-  const [imgUrl, setImgUrl] = useState();
+ 
   const [description, setDescription] = useState();
   const [category, setCategory] = useState(3);
   const navigate = useNavigate();
@@ -86,6 +86,7 @@ function ManageService() {
     }
   };
 
+  const [imgUrl, setImgUrl] = useState();
 //gọi hàm getlistservices
   useEffect(() => {
     const fetchImage = async () => {

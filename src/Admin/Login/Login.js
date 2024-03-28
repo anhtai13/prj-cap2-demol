@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAPI } from "../../API/authAPI.js";
 import { Form } from "react-bootstrap";
+import { Link } from 'react-router-dom';
 
 function Login() {
      const [userName, setUsername] = useState("")
@@ -54,6 +55,8 @@ function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+                <Link className="link" to="/forgotpassword">Forgot password</Link>
+                  
                 <div className="text-center">
                     <button type="button" onClick={handleLogin}>Login</button>
                 </div>
